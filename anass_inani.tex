@@ -1,0 +1,367 @@
+\documentclass[12pt]{article}
+
+% Packages for styling
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{titlesec}
+
+% Set up geometry
+\geometry{
+  a4paper,
+  left=25mm,
+  right=25mm,
+  top=25mm,
+  bottom=25mm,
+}
+
+% Set up listings
+\lstdefinestyle{SQLStyle}{
+    language=SQL,
+    backgroundcolor=\color{lightgray!20},   
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red!70!black},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=2
+}
+
+\lstdefinestyle{PythonStyle}{
+    language=Python,
+    backgroundcolor=\color{lightgray!20},   
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red!70!black},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=2
+}
+
+\lstdefinestyle{JavaStyle}{
+    language=Java,
+    backgroundcolor=\color{lightgray!20},   
+    commentstyle=\color{green!50!black},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{red!70!black},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=2
+}
+
+% For math environments
+\usepackage{amsmath}
+
+% Set up hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% Set spacing
+\setstretch{1.2}
+
+% Section formatting
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% Begin document
+\begin{document}
+
+\begin{center}
+    \huge\textbf{Technical Demonstration: Query Languages and Database Constraints}\\[0.5cm]
+    \large\textbf{Anass Inani}\\[0.2cm]
+    \large\today
+\end{center}
+
+\vspace{1cm}
+
+\section*{Question 1}
+
+\addcontentsline{toc}{section}{Question 1}
+
+\subsection*{Using a Query Language to Formulate Queries}
+
+Query languages are specialized languages used to make queries in databases and information systems. The most common query language is \textbf{Structured Query Language (SQL)}, which is used for managing and manipulating relational databases.
+
+Let us consider a relational database that contains the following tables:
+
+\begin{itemize}
+    \item \textbf{Customers}(\underline{CustomerID}, Name, City)
+    \item \textbf{Orders}(\underline{OrderID}, OrderDate, CustomerID, Amount)
+\end{itemize}
+
+Here, \underline{CustomerID} and \underline{OrderID} denote the primary keys of their respective tables.
+
+An example of an SQL query to find the names of customers who have placed orders exceeding \$1000 is:
+
+\begin{lstlisting}[style=SQLStyle]
+SELECT Customers.Name
+FROM Customers
+JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+WHERE Orders.Amount > 1000;
+\end{lstlisting}
+
+This query performs the following steps:
+
+\begin{enumerate}
+    \item Joins the \textbf{Customers} and \textbf{Orders} tables on the common \textbf{CustomerID} field.
+    \item Filters the records where \textbf{Orders.Amount} is greater than 1000.
+    \item Selects the \textbf{Name} field from the resulting set.
+\end{enumerate}
+
+\subsection*{Mathematical Foundation for Query Languages}
+
+The mathematical foundation of query languages, particularly SQL, is based on \textbf{Relational Algebra} and \textbf{Relational Calculus}.
+
+\subsubsection*{Relational Algebra}
+
+Relational algebra is a procedural query language that consists of a set of operations that take one or two relations as input and produce a new relation as output. The fundamental operations are:
+
+\begin{itemize}
+    \item \textbf{Selection} ($\sigma$): Filters rows based on a predicate.
+    \item \textbf{Projection} ($\pi$): Selects specific columns.
+    \item \textbf{Union} ($\cup$): Combines the tuples of two relations.
+    \item \textbf{Set Difference} ($-$): Finds tuples in one relation but not in another.
+    \item \textbf{Cartesian Product} ($\times$): Combines tuples from two relations.
+    \item \textbf{Rename} ($\rho$): Renames the relation or its attributes.
+\end{itemize}
+
+For example, the SQL query above can be expressed in relational algebra as:
+
+\[
+\pi_{\text{Name}} \left( \sigma_{\text{Amount} > 1000} \left( \text{Customers} \Join \text{Orders} \right) \right)
+\]
+
+Where $\Join$ denotes the natural join operation.
+
+\subsubsection*{Relational Calculus}
+
+Relational calculus is a non-procedural query language that uses mathematical predicate calculus to describe the queries. It comes in two flavors:
+
+\begin{itemize}
+    \item \textbf{Tuple Relational Calculus (TRC)}: Queries are expressed as \(\{ t \mid P(t) \}\), where \( t \) is a tuple and \( P(t) \) is a predicate.
+    \item \textbf{Domain Relational Calculus (DRC)}: Queries are expressed as \(\{ \langle x_1, x_2, \dots, x_n \rangle \mid P(x_1, x_2, \dots, x_n) \}\), where \( x_i \) are domain variables.
+\end{itemize}
+
+The previous query in TRC can be written as:
+
+\[
+\{ c.\text{Name} \mid \exists o \, ( \text{Customers}(c) \land \text{Orders}(o) \land c.\text{CustomerID} = o.\text{CustomerID} \land o.\text{Amount} > 1000 ) \}
+\]
+
+\subsection*{Reflection}
+
+Understanding the mathematical foundations of query languages allows for a deeper comprehension of how queries are processed and optimized. Relational algebra provides a clear procedural method for constructing queries, while relational calculus offers a declarative approach. Both are essential for database theory and practice, and they underpin the functionality of SQL and other query languages.
+
+\newpage
+
+\section*{Question 2}
+
+\addcontentsline{toc}{section}{Question 2}
+
+\subsection*{Embedded SQL Statements in a Third-Generation Programming Language}
+
+Embedded SQL allows SQL statements to be included within code written in a third-generation programming language (3GL) such as C, C++, Java, or Python. This integration enables applications to interact with databases directly, executing queries and processing results within the program's context.
+
+\subsection*{Example: Embedded SQL in Python}
+
+Using Python with a library such as \textbf{sqlite3} or \textbf{PyMySQL}, we can embed SQL statements within Python code.
+
+\subsubsection*{Connecting to the Database}
+
+First, we establish a connection to the database:
+
+\begin{lstlisting}[style=PythonStyle]
+import sqlite3
+
+# Connect to the SQLite database
+conn = sqlite3.connect('example.db')
+cursor = conn.cursor()
+\end{lstlisting}
+
+\subsubsection*{Executing an SQL Query}
+
+Suppose we want to retrieve the names of customers from a specific city:
+
+\begin{lstlisting}[style=PythonStyle]
+city = 'New York'
+
+# Parameterized query to prevent SQL injection
+cursor.execute('SELECT Name FROM Customers WHERE City = ?', (city,))
+\end{lstlisting}
+
+\subsubsection*{Processing the Results}
+
+We can fetch and process the results:
+
+\begin{lstlisting}[style=PythonStyle]
+results = cursor.fetchall()
+
+for row in results:
+    print(row[0])
+\end{lstlisting}
+
+\subsection*{Example: Embedded SQL in Java}
+
+In Java, we can use \textbf{JDBC} (Java Database Connectivity) to embed SQL statements.
+
+\subsubsection*{Connecting to the Database}
+
+\begin{lstlisting}[style=JavaStyle]
+import java.sql.*;
+
+Connection conn = DriverManager.getConnection(
+    "jdbc:mysql://localhost:3306/mydb", "user", "password");
+Statement stmt = conn.createStatement();
+\end{lstlisting}
+
+\subsubsection*{Executing an SQL Query}
+
+\begin{lstlisting}[style=JavaStyle]
+String city = "New York";
+String query = "SELECT Name FROM Customers WHERE City = ?";
+PreparedStatement pstmt = conn.prepareStatement(query);
+pstmt.setString(1, city);
+ResultSet rs = pstmt.executeQuery();
+\end{lstlisting}
+
+\subsubsection*{Processing the Results}
+
+\begin{lstlisting}[style=JavaStyle]
+while(rs.next()) {
+    String name = rs.getString("Name");
+    System.out.println(name);
+}
+\end{lstlisting}
+
+\subsection*{Reflection}
+
+Embedding SQL in a 3GL allows developers to create dynamic and powerful applications that interact with databases seamlessly. It is crucial to use parameterized queries or prepared statements to prevent SQL injection attacks. Understanding how to integrate SQL within programming languages enhances the ability to build robust data-driven applications.
+
+\newpage
+
+\section*{Question 3}
+
+\addcontentsline{toc}{section}{Question 3}
+
+\subsection*{Implications of Different Constraints on the Database Structure}
+
+Constraints in a database define rules that the data must comply with, ensuring data integrity and consistency. Different types of constraints have various implications on the database structure and how data is managed.
+
+\subsubsection*{Primary Key Constraint}
+
+A primary key uniquely identifies each record in a table.
+
+\textbf{Implications}:
+
+\begin{itemize}
+    \item Enforces uniqueness of the key column(s).
+    \item Automatically creates an index, improving query performance.
+    \item Ensures that no duplicate or \texttt{NULL} values are entered in the primary key columns.
+\end{itemize}
+
+\subsubsection*{Foreign Key Constraint}
+
+A foreign key in one table refers to a primary key in another table, establishing a relationship between the two tables.
+
+\textbf{Implications}:
+
+\begin{itemize}
+    \item Enforces referential integrity between related tables.
+    \item Prevents actions that would destroy links between tables.
+    \item May restrict deletion or updating of referenced data.
+\end{itemize}
+
+\subsubsection*{Unique Constraint}
+
+Ensures that all values in a column are unique.
+
+\textbf{Implications}:
+
+\begin{itemize}
+    \item Prevents duplicate entries in the constrained column(s).
+    \item Allows one \texttt{NULL} value (in most SQL implementations).
+    \item May create an index to enforce uniqueness.
+\end{itemize}
+
+\subsubsection*{Not Null Constraint}
+
+Specifies that a column cannot have \texttt{NULL} values.
+
+\textbf{Implications}:
+
+\begin{itemize}
+    \item Ensures that the column must have a value upon record insertion.
+    \item Prevents accidental omission of critical data.
+    \item May impact the order of data insertion when dealing with dependencies.
+\end{itemize}
+
+\subsubsection*{Check Constraint}
+
+Enforces domain integrity by limiting the values that can be placed in a column.
+
+\textbf{Implications}:
+
+\begin{itemize}
+    \item Validates data against a logical expression.
+    \item Prevents invalid data entry that does not meet the specified condition.
+    \item May impact performance if complex expressions are used.
+\end{itemize}
+
+\subsubsection*{Default Constraint}
+
+Specifies a default value for a column when no value is provided.
+
+\textbf{Implications}:
+
+\begin{itemize}
+    \item Ensures that a column has a valid value even if none is provided.
+    \item Simplifies data entry by auto-populating fields.
+    \item May mask omissions if defaults are not carefully chosen.
+\end{itemize}
+
+\subsection*{Overall Implications on Database Structure}
+
+Implementing constraints affects the database structure in several ways:
+
+\begin{itemize}
+    \item \textbf{Data Integrity}: Constraints enforce rules that maintain the accuracy and reliability of the data.
+    \item \textbf{Performance}: Indexes created by constraints like primary keys and unique constraints can improve query performance but may slow down data modification operations due to the overhead of maintaining indexes.
+    \item \textbf{Complexity}: Constraints add complexity to the database schema, requiring careful design to ensure that they do not conflict or cause unintended consequences.
+    \item \textbf{Maintenance}: Changes to constraints may require significant effort, especially in large databases with extensive dependencies.
+\end{itemize}
+
+\subsection*{Reflection}
+
+Understanding the implications of constraints is crucial for designing robust databases. Constraints help enforce business rules and maintain data integrity, but they must be carefully planned to balance data integrity with performance and flexibility. Proper use of constraints leads to a well-structured database that supports reliable and efficient data operations.
+
+\end{document}
